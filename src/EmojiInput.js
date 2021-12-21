@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
+    Image,
     TextInput,
     Dimensions,
     TouchableOpacity,
@@ -379,7 +380,7 @@ class EmojiInput extends React.PureComponent {
                             { ...this.props.categoryLabelTextStyle }
                         ]}
                     >
-                        {data.title}
+                        {data.title === 'Frequently Used' ? 'FAVORITES': data.title.replace('&', 'AND')}
                     </Text>
                 );
             case ViewTypes.EMOJI:
@@ -433,7 +434,7 @@ class EmojiInput extends React.PureComponent {
 
     render() {
         const { selectedEmoji, offsetY } = this.state;
-        const { enableSearch, width, renderAheadOffset } = this.props;
+        const { enableSearch, noSearchTextStyle,width, searchIcon,renderAheadOffset, searchContainerStyle, searchStyle,placeholderTextColor } = this.props;
         return (
             <View
                 style={{
@@ -444,22 +445,14 @@ class EmojiInput extends React.PureComponent {
                 }}
             >
                 {enableSearch && (
-                    <TextInput
+                  <View style={searchContainerStyle}>
+                      <Image source={searchIcon} style={{width:20, height:20}}/>
+                      <TextInput
                         ref={input => {
                             this.textInput = input;
                         }}
-                        placeholderTextColor={'#A0A0A2'}
-                        style={{
-                            backgroundColor: 'white',
-                            borderColor: '#A0A0A2',
-                            borderWidth: 0.5,
-                            color: 'black',
-                            fontSize: responsiveFontSize(2),
-                            padding: 10,
-                            paddingLeft: 15,
-                            borderRadius: 15,
-                            margin: 10,
-                        }}
+                        placeholderTextColor={placeholderTextColor}
+                        style={searchStyle}
                         returnKeyType={'search'}
                         clearButtonMode={'always'}
                         placeholder={'Search emoji'}
@@ -470,8 +463,8 @@ class EmojiInput extends React.PureComponent {
                             });
                             if (text.length) {
                                 if (
-                                    text.length >
-                                    this.state.previousLongestQuery.length
+                                  text.length >
+                                  this.state.previousLongestQuery.length
                                 ) {
                                     this.setState({
                                         previousLongestQuery: text
@@ -481,12 +474,12 @@ class EmojiInput extends React.PureComponent {
                                 if (this.loggingFunction) {
                                     if (this.verboseLoggingFunction) {
                                         this.loggingFunction(
-                                            this.state.previousLongestQuery,
-                                            'previousLongestQuery'
+                                          this.state.previousLongestQuery,
+                                          'previousLongestQuery'
                                         );
                                     } else {
                                         this.loggingFunction(
-                                            this.state.previousLongestQuery
+                                          this.state.previousLongestQuery
                                         );
                                     }
                                 }
@@ -495,11 +488,12 @@ class EmojiInput extends React.PureComponent {
                                 });
                             }
                         }}
-                    />
+                      />
+                  </View>
                 )}
                 {this.state.emptySearchResult && (
                     <View style={styles.emptySearchResultContainer}>
-                        <Text>No search results.</Text>
+                        <Text style={noSearchTextStyle} >No search results.</Text>
                     </View>
                 )}
                 <RecyclerListView
@@ -665,7 +659,13 @@ EmojiInput.propTypes = {
     defaultFrequentlyUsedEmoji: PropTypes.arrayOf(PropTypes.string),
     resetSearch: PropTypes.bool,
     filterFunctions: PropTypes.arrayOf(PropTypes.func),
-    renderAheadOffset: PropTypes.number
+    renderAheadOffset: PropTypes.number,
+    searchContainerStyle:PropTypes.object,
+    searchStyle:PropTypes.object,
+    noSearchTextStyle:PropTypes.object,
+    placeholderTextColor:PropTypes.string,
+    searchIcon:PropTypes.number
+
 };
 
 const styles = {
