@@ -692,7 +692,7 @@ const styles = {
         color: 'black',
         fontWeight: 'bold',
         paddingVertical: 15,
-        paddingLeft: 10
+        paddingLeft: 15
     },
     categoryIconContainer: {
         flex: 1,
