@@ -454,7 +454,6 @@ class EmojiInput extends React.PureComponent {
                         placeholderTextColor={placeholderTextColor}
                         style={searchStyle}
                         returnKeyType={'search'}
-                        clearButtonMode={'always'}
                         placeholder={'Search emoji'}
                         autoCorrect={false}
                         onChangeText={text => {
