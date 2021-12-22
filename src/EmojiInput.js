@@ -434,7 +434,11 @@ class EmojiInput extends React.PureComponent {
 
     render() {
         const { selectedEmoji, offsetY } = this.state;
-        const { enableSearch, noSearchTextStyle,width, searchIcon,renderAheadOffset, searchContainerStyle, searchStyle,placeholderTextColor } = this.props;
+        const { enableSearch, isDark, noSearchTextStyle,width,renderAheadOffset, searchContainerStyle, searchStyle,placeholderTextColor } = this.props;
+        const searchIcon = isDark
+          ? require('./assets/searchEmojiDark.png')
+          : require('./assets/searchEmoji.png');
+
         return (
             <View
                 style={{
@@ -454,7 +458,7 @@ class EmojiInput extends React.PureComponent {
                         placeholderTextColor={placeholderTextColor}
                         style={searchStyle}
                         returnKeyType={'search'}
-                        placeholder={'Search emoji'}
+                        placeholder={'Search emojis'}
                         autoCorrect={false}
                         onChangeText={text => {
                             this.setState({
@@ -663,7 +667,7 @@ EmojiInput.propTypes = {
     searchStyle:PropTypes.object,
     noSearchTextStyle:PropTypes.object,
     placeholderTextColor:PropTypes.string,
-    searchIcon:PropTypes.number
+    isDark:PropTypes.bool
 
 };
 
