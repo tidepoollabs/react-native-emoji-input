@@ -499,6 +499,8 @@ class EmojiInput extends React.PureComponent {
                         <Text style={noSearchTextStyle} >No search results.</Text>
                     </View>
                 )}
+                {
+                    this.state.dataProvider.getSize() > 0 &&
                 <RecyclerListView
                     style={{ flex: 1 }}
                     renderAheadOffset={renderAheadOffset}
@@ -508,6 +510,7 @@ class EmojiInput extends React.PureComponent {
                     ref={component => (this._recyclerListView = component)}
                     onScroll={this.handleScroll}
                 />
+                }
                 {!this.state.searchQuery &&
                     this.props.showCategoryTab && (
                         <TouchableWithoutFeedback>
