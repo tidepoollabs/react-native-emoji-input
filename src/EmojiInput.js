@@ -501,6 +501,7 @@ class EmojiInput extends React.PureComponent {
                 )}
                 <RecyclerListView
                     style={{ flex: 1 }}
+                    keyboardShouldPersistTaps={true}
                     renderAheadOffset={renderAheadOffset}
                     layoutProvider={this._layoutProvider}
                     dataProvider={this.state.dataProvider}
