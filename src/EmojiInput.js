@@ -499,16 +499,18 @@ class EmojiInput extends React.PureComponent {
                         <Text style={noSearchTextStyle} >No search results.</Text>
                     </View>
                 )}
+                {this.state.dataProvider.getSize() > 0 &&
                 <RecyclerListView
-                    style={{ flex: 1 }}
-                    keyboardShouldPersistTaps={'always'}
-                    renderAheadOffset={renderAheadOffset}
-                    layoutProvider={this._layoutProvider}
-                    dataProvider={this.state.dataProvider}
-                    rowRenderer={this._rowRenderer}
-                    ref={component => (this._recyclerListView = component)}
-                    onScroll={this.handleScroll}
+                  style={{ flex: 1 }}
+                  keyboardShouldPersistTaps={'always'}
+                  renderAheadOffset={renderAheadOffset}
+                  layoutProvider={this._layoutProvider}
+                  dataProvider={this.state.dataProvider}
+                  rowRenderer={this._rowRenderer}
+                  ref={component => (this._recyclerListView = component)}
+                  onScroll={this.handleScroll}
                 />
+                }
                 {!this.state.searchQuery &&
                     this.props.showCategoryTab && (
                         <TouchableWithoutFeedback>
