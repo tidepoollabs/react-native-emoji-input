@@ -265,25 +265,37 @@ class EmojiInput extends React.PureComponent {
                     this._recyclerListView.scrollToTop(false);
                 }
             }, 15);
-        } else {
-            let fue = _(this.state.frequentlyUsedEmoji)
-                .toPairs()
-                .sortBy([1])
-                .reverse()
-                .map(([key]) => key)
-                .value();
-            fue = _(this.props.defaultFrequentlyUsedEmoji)
-                .concat(fue)
-                .take(this.props.numFrequentlyUsedEmoji)
-                .value();
+        }
+        else {
+            let fue = this.props.defaultFrequentlyUsedEmoji
             let _emoji = _(emojiLib)
-                .pick(fue)
-                .mapKeys((v, k) => `FUE_${k}`)
-                .mapValues(v => ({ ...v, category: 'fue' }))
-                .extend(emojiLib)
-                .value();
+              .pick(fue)
+              .mapKeys((v, k) => `FUE_${k}`)
+              .mapValues(v => ({ ...v, category: 'fue' }))
+              .extend(emojiLib)
+              .value();
             this.emojiRenderer(_emoji);
         }
+
+        // else {
+        //     let fue = _(this.state.frequentlyUsedEmoji)
+        //         .toPairs()
+        //         .sortBy([1])
+        //         .reverse()
+        //         .map(([key]) => key)
+        //         .value();
+        //     fue = _(this.props.defaultFrequentlyUsedEmoji)
+        //         .concat(fue)
+        //         .take(this.props.numFrequentlyUsedEmoji)
+        //         .value();
+        //     let _emoji = _(emojiLib)
+        //         .pick(fue)
+        //         .mapKeys((v, k) => `FUE_${k}`)
+        //         .mapValues(v => ({ ...v, category: 'fue' }))
+        //         .extend(emojiLib)
+        //         .value();
+        //     this.emojiRenderer(_emoji);
+        // }
     };
 
     emojiRenderer = emojis => {
