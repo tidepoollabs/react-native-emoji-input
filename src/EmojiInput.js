@@ -259,12 +259,12 @@ class EmojiInput extends React.PureComponent {
                 }
             }
             this.emojiRenderer(result);
-            setTimeout(() => {
-                if (this._isMounted) {
-                    this._recyclerListView._pendingScrollToOffset = null;
-                    this._recyclerListView.scrollToTop(false);
-                }
-            }, 15);
+            // setTimeout(() => {
+            //     if (this._isMounted) {
+            //         this._recyclerListView._pendingScrollToOffset = null;
+            //         this._recyclerListView.scrollToTop(false);
+            //     }
+            // }, 15);
         }
         else {
             let fue = this.props.defaultFrequentlyUsedEmoji
