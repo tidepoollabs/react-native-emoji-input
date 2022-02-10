@@ -514,7 +514,7 @@ class EmojiInput extends React.PureComponent {
                 {this.state.dataProvider.getSize() > 0 &&
                 <RecyclerListView
                   style={{ flex: 1 }}
-                  keyboardShouldPersistTaps={'always'}
+                  keyboardShouldPersistTaps={'on-drag'}
                   renderAheadOffset={renderAheadOffset}
                   layoutProvider={this._layoutProvider}
                   dataProvider={this.state.dataProvider}
@@ -571,7 +571,7 @@ class EmojiInput extends React.PureComponent {
                                     selectedEmoji.y -
                                     offsetY -
                                     width / this.props.numColumns +
-                                    (enableSearch ? 35 : 0)
+                                    (enableSearch ? 65 : 0)
                             }
                         ]}
                     >
@@ -579,7 +579,9 @@ class EmojiInput extends React.PureComponent {
                             style={[
                                 styles.skinSelector,
                                 {
-                                    height: this.props.emojiFontSize + 20
+                                    backgroundColor:  isDark ? 'black' : '#F9F9F9',
+                                    height: this.props.emojiFontSize + 20,
+                                    borderRadius:50
                                 }
                             ]}
                         >
@@ -603,24 +605,24 @@ class EmojiInput extends React.PureComponent {
                                 })
                                 .value()}
                         </View>
-                        <View
-                            style={[
-                                styles.skinSelectorTriangleContainer,
-                                {
-                                    marginLeft:
-                                        selectedEmoji.x +
-                                        width / this.props.numColumns / 2 -
-                                        30 / 2
-                                }
-                            ]}
-                        >
-                            <Triangle
-                                width={30}
-                                height={20}
-                                color={'#fff'}
-                                direction={'down'}
-                            />
-                        </View>
+                        {/*<View*/}
+                        {/*    style={[*/}
+                        {/*        styles.skinSelectorTriangleContainer,*/}
+                        {/*        {*/}
+                        {/*            marginLeft:*/}
+                        {/*                selectedEmoji.x +*/}
+                        {/*                width / this.props.numColumns / 2 -*/}
+                        {/*                30 / 2*/}
+                        {/*        }*/}
+                        {/*    ]}*/}
+                        {/*>*/}
+                        {/*    <Triangle*/}
+                        {/*        width={30}*/}
+                        {/*        height={20}*/}
+                        {/*        color={'#fff'}*/}
+                        {/*        direction={'down'}*/}
+                        {/*    />*/}
+                        {/*</View>*/}
                     </Animatable.View>
                 )}
             </View>
@@ -719,21 +721,21 @@ const styles = {
         justifyContent: 'space-around'
     },
     skinSelectorContainer: {
-        width: '100%',
+        width: '80%',
         flex: 1,
         flexDirection: 'column',
+        marginLeft:'10%',
         justifyContent: 'flex-start',
-        position: 'absolute'
+        position: 'absolute',
     },
     skinSelector: {
         width: '100%',
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#fff'
     },
     skinSelectorTriangleContainer: {
-        height: 20
+        height: 20,
     },
     skinEmoji: {
         flex: 1
