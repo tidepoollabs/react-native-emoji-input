@@ -462,13 +462,13 @@ class EmojiInput extends React.PureComponent {
 
     render() {
         const { selectedEmoji, offsetY } = this.state;
-        const { enableSearch, isDark, noSearchTextStyle,width, searchContainerStyle, searchStyle,placeholderTextColor, Wrapper } = this.props;
+        const { enableSearch, isDark, noSearchTextStyle,width, searchContainerStyle, searchStyle,placeholderTextColor, Wrapper, wrapperProps } = this.props;
         const searchIcon = isDark
           ? require('./assets/searchEmojiDark.png')
           : require('./assets/searchEmoji.png');
 
         const List = Wrapper ? (
-          <Wrapper style={{ flex: 1}}>
+          <Wrapper {...wrapperProps} style={{ flex: 1}}>
               {this.renderRecyclerListView()}
           </Wrapper>
         ) : this.renderRecyclerListView()
