@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions, Platform } from 'react-native';
 import _ from 'lodash';
 
 const EMOJI_DATASOURCE_VERSION = '4.0.4';
@@ -107,7 +107,11 @@ const styles = StyleSheet.create({
     emojiWrapper: {
         justifyContent: 'space-around',
         alignItems: 'center',
-        flex: 1
+        flex: 1,
+        ...(Platform.OS === 'android' && {
+            width: Dimensions.get('window').width / 7,
+            marginBottom: 10
+        }),
     },
     labelStyle: {
         color: 'black',

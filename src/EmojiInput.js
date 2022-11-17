@@ -4,11 +4,12 @@ import {
     View,
     Text,
     Image,
+    Platform,
     TextInput,
     Dimensions,
+    AsyncStorage,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    AsyncStorage
 } from 'react-native';
 import {
     RecyclerListView,
@@ -168,6 +169,8 @@ class EmojiInput extends React.PureComponent {
           }
         );
 
+        this._headerSection = this._headerSection.bind(this);
+        this._itemSection = this._itemSection.bind(this);
         this._rowRenderer = this._rowRenderer.bind(this);
         this._isMounted = false;
 
@@ -407,6 +410,32 @@ class EmojiInput extends React.PureComponent {
         }
     }
 
+    _itemSection(data) {
+        return (
+          <Emoji
+            onPress={this.handleEmojiPress}
+            onLongPress={this.handleEmojiLongPress}
+            data={data.item}
+            size={this.props.emojiFontSize}
+          />
+        );
+    }
+
+    _headerSection(data) {
+        return (
+          <View style={{ width: Dimensions.get('window').width}}>
+              <Text
+                style={[
+                    styles.categoryText,
+                    { ...this.props.categoryLabelTextStyle }
+                ]}
+              >
+                  {data.title.replace('&', 'AND')}
+              </Text>
+          </View>
+        );
+    }
+
     handleCategoryPress = key => {
         this._recyclerListView.scrollToOffset(
           0,
@@ -445,33 +474,52 @@ class EmojiInput extends React.PureComponent {
     };
 
     renderRecyclerListView = () => {
-        const {  renderAheadOffset } = this.props;
+        const {  SectionList, renderAheadOffset } = this.props;
 
-        return <RecyclerListView
-          onScroll={this.handleScroll}
-          rowRenderer={this._rowRenderer}
-          keyboardDismissMode='on-drag'
-          keyboardShouldPersistTaps={'always'}
-          renderAheadOffset={renderAheadOffset}
-          layoutProvider={this._layoutProvider}
-          dataProvider={this.state.dataProvider}
-          style={{ flex: 1, minHeight: 1, minWidth: 1 }}
-          ref={component => (this._recyclerListView = component)}
-        />
+        const sections = this.state.dataProvider._data.reduce((sections, value) => {
+            if (value?.categoryMarker) {
+                sections.push({title: value, data: []});
+            } else {
+                sections[sections.length - 1].data.push(value);
+            }
+            return sections;
+        }, []);
+        if (Platform.OS === 'android') {
+            return (
+              <SectionList
+                contentContainerStyle={{
+                    flexDirection  : 'row',
+                    flexWrap       : 'wrap'
+                }}
+                sections={sections}
+                renderItem={this._itemSection}
+                stickySectionHeadersEnabled={false}
+                keyExtractor={(item, index) => `${item.key}-${index}`}
+                renderSectionHeader={({ section: { title } }) => this._headerSection(title)}
+              />
+            )
+        } else {
+            return <RecyclerListView
+              onScroll={this.handleScroll}
+              rowRenderer={this._rowRenderer}
+              keyboardDismissMode='on-drag'
+              keyboardShouldPersistTaps={'always'}
+              renderAheadOffset={renderAheadOffset}
+              layoutProvider={this._layoutProvider}
+              dataProvider={this.state.dataProvider}
+              style={{ flex: 1, minHeight: 1, minWidth: 1 }}
+              ref={component => (this._recyclerListView = component)}
+            />
+        }
     }
+
 
     render() {
         const { selectedEmoji, offsetY } = this.state;
-        const { enableSearch, isDark, noSearchTextStyle,width, searchContainerStyle, searchStyle,placeholderTextColor, Wrapper, wrapperProps } = this.props;
+        const { enableSearch, isDark, noSearchTextStyle, width, searchContainerStyle, searchStyle, placeholderTextColor } = this.props;
         const searchIcon = isDark
           ? require('./assets/searchEmojiDark.png')
           : require('./assets/searchEmoji.png');
-
-        const List = Wrapper ? (
-          <Wrapper {...wrapperProps} style={{ flex: 1}}>
-              {this.renderRecyclerListView()}
-          </Wrapper>
-        ) : this.renderRecyclerListView()
 
         return (
           <View
@@ -534,7 +582,7 @@ class EmojiInput extends React.PureComponent {
                 </View>
               )}
               {this.state.dataProvider.getSize() > 0 &&
-                List
+              this.renderRecyclerListView()
               }
               {!this.state.searchQuery &&
               this.props.showCategoryTab && (
