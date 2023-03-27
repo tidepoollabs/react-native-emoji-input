@@ -493,6 +493,7 @@ class EmojiInput extends React.PureComponent {
                 }}
                 sections={sections}
                 renderItem={this._itemSection}
+                keyboardShouldPersistTaps={'handled'}
                 stickySectionHeadersEnabled={false}
                 keyExtractor={(item, index) => `${item.key}-${index}`}
                 renderSectionHeader={({ section: { title } }) => this._headerSection(title)}
